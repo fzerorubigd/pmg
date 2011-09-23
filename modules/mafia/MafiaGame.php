@@ -546,6 +546,38 @@ class MafiaGame
 			
 	}
 	
+	/**
+	 * 
+	 * Choose $count from $list
+	 * @param array $list
+	 * @param integer $count
+	 * @return array 
+	 */
+	
+	private function randSelectFrom(&$list , $count)
+	{
+		$result = array();
+		while ($count)
+		{
+			$count--;
+			sort($list); //To fix the broken keys
+			$rand = self::rand(0, count($list) - 1);
+			$result[] = $list[$rand];
+			unset($list[$rand]);
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * 
+	 * Start the game!
+	 * @param integer $mafia mafia count
+	 * @param integer $dr has dr or not, 0 for not
+	 * @param integer $detective has detectiv or not, 0 for not
+	 * @param integer $noharm has noharm or not, 0 for not
+	 */ 
+	
 	public function start($mafia,$dr = 0,$detective = 0, $noharm = 0)
 	{
 		$normal = $this->getCount() - $mafia;
@@ -576,82 +608,39 @@ class MafiaGame
 		$this->setMode(self::$MAFIA_ROOM , "+k " . $this->mafiaPass);
 		$this->setMode(self::$LOBBY_ROOM , "+k " . $this->lobbyPass);
 		
-		$result = $this->inGameNicks;
-		sort($result);
+		$listOfUsers = array_keys($this->inGameNicks);
 		
-		while ($normal--)
-		{
-			$indx = self::rand(0 , count($result) - 1);
-			unset($result[$indx]);
-			sort($result);
-		};
-		
-		$this->state = MAFIA_TURN;
-		
-		foreach ($result as $mafia)
-		{
-			$this->inGamePart[strtolower($mafia)] = array ('mode'=>MAFIA_PPL, 'alive'=> true );
-		}
-
 		if ($dr)
 		{
-			$drIndex = self::rand(1, $this->getCount() - $mafia  );
-			
-			foreach ($this->inGamePart as $nick => $data )
-			{
-				if ($drIndex)
-				{
-					if ($this->inGamePart[strtolower($nick)]['mode'] == NORMAL_PPL)
-						$drIndex--;
-					if ($drIndex <= 1)
-					{
-						$this->inGamePart[strtolower($nick)] = array ('mode'=>DR_PPL, 'alive'=> true );
-						break;
-					}
-				}
-			}
+			$result = $this->randSelectFrom($listOfUsers, 1);
+			foreach ($result as $who)
+				$this->inGamePart[strtolower($who)] = array ('mode'=>DR_PPL, 'alive'=> true );
+			$this->say(self::$LOBBY_ROOM, sprintf('DEBUG : Choose %d dr from %d player',count($result),count($listOfUsers) + 1));
 		}
+		
 		
 		if ($detective)
 		{
-			$tmp = $dr ? 1 : 0;
-			$detIndex = self::rand(1, $this->getCount() - $mafia  - $tmp);
-			
-			foreach ($this->inGamePart as $nick => $data )
-			{
-				if ($detIndex)
-				{
-					if ($this->inGamePart[strtolower($nick)]['mode'] == NORMAL_PPL)
-						$detIndex--;
-					if ($detIndex <= 1)
-					{
-						$this->inGamePart[strtolower($nick)] = array ('mode'=>DETECTIVE_PPL, 'alive'=> true );
-						break;
-					}
-				}
-			}
+			$result = $this->randSelectFrom($listOfUsers, 1);
+			foreach ($result as $who)
+				$this->inGamePart[strtolower($who)] = array ('mode'=>DETECTIVE_PPL, 'alive'=> true );
+			$this->say(self::$LOBBY_ROOM, sprintf('DEBUG : Choose %d detective from %d player',count($result),count($listOfUsers) + 1));
 		}
 		
 		if ($noharm)
 		{
-			$tmp = $dr ? 1 : 0;
-			$tmp += $detective ? 1 : 0;
-			$noIndex = self::rand(0, $this->getCount() - $mafia - $tmp);
-			
-			foreach ($this->inGamePart as $nick => $data )
-			{
-				if ($noIndex)
-				{
-					if ($this->inGamePart[strtolower($nick)]['mode'] == NORMAL_PPL)
-						$noIndex--;
-					if ($noIndex == 1)
-					{
-						$this->inGamePart[strtolower($nick)] = array ('mode'=>NOHARM_PPL, 'alive'=> true );
-						break;
-					}
-				}
-			}
-		}		
+			$result = $this->randSelectFrom($listOfUsers, 1);
+			foreach ($result as $who)
+				$this->inGamePart[strtolower($who)] = array ('mode'=>NOHARM_PPL, 'alive'=> true );
+			$this->say(self::$LOBBY_ROOM, sprintf('DEBUG : Choose %d inv from %d player',count($result),count($listOfUsers) + 1));
+		}	
+		
+		$result = $this->randSelectFrom($listOfUsers, $mafia);
+		foreach ($result as $who)
+			$this->inGamePart[strtolower($who)] = array ('mode'=>MAFIA_PPL, 'alive'=> true );
+		$this->say(self::$LOBBY_ROOM, sprintf('DEBUG : Choose %d mafia from %d player',count($result),count($listOfUsers) + $mafia));
+
+		$this->state = MAFIA_TURN;
 
 		$this->startInfo();
 		$this->sayStatus();
