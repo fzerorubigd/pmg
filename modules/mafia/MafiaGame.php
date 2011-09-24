@@ -85,7 +85,7 @@ class MafiaGame
 	private function setMode($channel ,$mode)
 	{
 		$this->say("ChanServ","SET $channel MLOCK $mode");
-		sleep(2);
+		sleep(1);
 	}
 	/**
 	 * 
@@ -97,7 +97,7 @@ class MafiaGame
 	private function setOp($channel, $who)
 	{
 		$this->say("ChanServ","OP  " . $channel . " " . $who);
-		sleep(2);
+		sleep(1);
 	}
 	
 	/**
@@ -109,12 +109,12 @@ class MafiaGame
 	
 	private function say($who, $message)
 	{
-		static $lastTime = 0;
-		static $count = 0;
+		//static $lastTime = 0;
+		//static $count = 0;
 		
 		//Try to avoid flood :D
-		$count++;
-		if ($lastTime > time() - 3 && $count > 5)
+		//$count++;
+/*		if ($lastTime > time() - 3 && $count > 5)
 		{
 			$lastTime = time();
 			$count = 0;
@@ -125,9 +125,10 @@ class MafiaGame
 			$lastTime = 0;
 			$count = 0;
 			sleep(1);
-		}
+		} */
 		$server = Server::getInstance();
 		$server->message($who,$message);
+		sleep(1);
 	}	
 	
 	/**
@@ -140,6 +141,7 @@ class MafiaGame
 	{
 		$server = Server::getInstance();
 		$server->act($who,$message);
+		sleep(1);
 	}	
 		
 	/**
@@ -152,6 +154,7 @@ class MafiaGame
 	{
 		$server = Server::getInstance();
 		$server->notice($who,$message);
+		sleep(1);
 	}	
 	
 	/**
@@ -164,6 +167,7 @@ class MafiaGame
 	{
 		$server = Server::getInstance();
 		$server->topic($channel, $topic, true);		
+		sleep(1);
 	}
 	
 	/**
@@ -196,6 +200,7 @@ class MafiaGame
 	{
 		$server = Server::getInstance();
 		$server->join($channel);	
+		sleep(1);
 	}
 	
 	/**
@@ -233,7 +238,7 @@ class MafiaGame
 		//Join to channel (in case of drop on flood :D )
 		$this->join(self::$LOBBY_ROOM);
 		$this->join(self::$MAFIA_ROOM);		
-		sleep(2);
+
 		//Yet again, set the OP since some time when you join, you need to set it again :(
 		$this->setOp(self::$LOBBY_ROOM , Config::$nickname);
 		$this->setOp(self::$MAFIA_ROOM , Config::$nickname);
@@ -740,7 +745,10 @@ class MafiaGame
 				$this->say($user, MafiaGame::boco($code, $nick) . " is " . MafiaGame::bold($alive));
 				$count ++;
 				if ($count>5)
-					sleep(2);
+				{
+					sleep(1);
+					$count = 0;
+				}
 			}
 		}
 		else
@@ -750,7 +758,10 @@ class MafiaGame
 				$this->say($user, MafiaGame::boco(2, $nick) . " is in the game.");
 				$count ++;
 				if ($count>5)
-					sleep(2);				
+				{
+					sleep(1);
+					$count = 0;
+				}
 			}		
 		}
 	}
@@ -852,13 +863,22 @@ class MafiaGame
 			
 			if ($count > 5 )
 			{
-				sleep(2);
+				sleep(1);
 				$count = 0;
 			}
 		}
 		$game->setMode(self::$LOBBY_ROOM ,  "-m");
 		$game->say(self::$LOBBY_ROOM,"Please leave " . self::$MAFIA_ROOM);
 		$game->say(self::$MAFIA_ROOM,"Please leave " . self::$MAFIA_ROOM);
+		//last:D kick all, from mafia channel
+		foreach ($this->inGameNicks as $nick => $data)
+		{
+			$this->kick($nick , self::$MAFIA_ROOM  ,"The game is done, you need to leave!");
+		}
+		
+		$rand = self::rand(100000,999999);
+		$this->setMode(self::$MAFIA_ROOM , "+k " . $rand);
+			
 		self::getInstance(true);
 	}
 	
@@ -1262,7 +1282,7 @@ class MafiaGame
 				
 				if ($count > 5)
 				{
-					sleep(2);
+					sleep(1);
 					$count = 0;
 				}
 			}			
@@ -1278,7 +1298,7 @@ class MafiaGame
 					
 					if ($count > 5)
 					{
-						sleep(2);
+						sleep(1);
 						$count = 0;
 					}					
 				}	
