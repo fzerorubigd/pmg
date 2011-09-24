@@ -589,6 +589,19 @@ class MafiaGame
 		if ($this->state <> 0 )
 			return;
 		
+		$cnt = $mafia;
+		if ($dr)
+			$cnt++;
+		if ($detective)
+			$cnt++;
+		if ($noharm)
+			$cnt++;
+		if ($cnt > $this->getCount())
+		{
+			$this->say(self::$LOBBY_ROOM,sprintf("You need at least %d player but you are %d",$cnt,$this->getCount()));
+			return;
+		}
+		
 		$haveDr = $dr ? " One " : " No "; 
 		$haveDet = $detective ? " One " : " No ";
 		$haveNoHarm = $noharm ? " One " : " No ";
@@ -871,13 +884,14 @@ class MafiaGame
 		$game->say(self::$LOBBY_ROOM,"Please leave " . self::$MAFIA_ROOM);
 		$game->say(self::$MAFIA_ROOM,"Please leave " . self::$MAFIA_ROOM);
 		//last:D kick all, from mafia channel
+		$game = self::getInstance();
 		foreach ($this->inGameNicks as $nick => $data)
 		{
-			$this->kick($nick , self::$MAFIA_ROOM  ,"The game is done, you need to leave!");
+			$game->kick($nick , self::$MAFIA_ROOM  ,"The game is done, you need to leave!");
 		}
 		
 		$rand = self::rand(100000,999999);
-		$this->setMode(self::$MAFIA_ROOM , "+k " . $rand);
+		$game->setMode(self::$MAFIA_ROOM , "+k " . $rand);
 			
 		self::getInstance(true);
 	}
