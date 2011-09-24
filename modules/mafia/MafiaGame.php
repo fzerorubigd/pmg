@@ -885,7 +885,7 @@ class MafiaGame
 		$game->say(self::$MAFIA_ROOM,"Please leave " . self::$MAFIA_ROOM);
 		//last:D kick all, from mafia channel
 		$game = self::getInstance();
-		foreach ($this->inGameNicks as $nick => $data)
+		foreach ($game->inGameNicks as $nick => $data)
 		{
 			$game->kick($nick , self::$MAFIA_ROOM  ,"The game is done, you need to leave!");
 		}
