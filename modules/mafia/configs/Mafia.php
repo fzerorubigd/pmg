@@ -28,6 +28,8 @@ class Mafia implements ModuleConfig {
 		"restart" => "modules\mafia\MafiaReStartGame",
 		"validate" => "modules\mafia\MafiaValidate",
 		"timeout" => "modules\mafia\MafiaTimeout",
+		"count" => "modules\mafia\MafiaCount",
+		"wish" => "modules\mafia\MafiaWish",
 	);
 	
 	public static $mappedEvents = array(
