@@ -348,9 +348,29 @@ class MafiaGame
 	 */
 	public static function getInstance($force = false)
 	{
-		if (!self::$instanse || $force)
+		if (!self::$instanse)
+		{
 			self::$instanse = new MafiaGame();
-			
+			return self::$instanse;
+		}	
+		
+		if ($force)
+		{
+			if (count(self::$instanse->inGameNicks))
+			{
+				$mode = " -";
+				$ppl = '';
+				foreach (self::$instanse->inGamePart as $nick => $part)
+				{
+					$mode .= "v";
+					$ppl  .= " $nick";
+				}
+				//Send the command
+				$server = Server::getInstance();
+				$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);				
+			}
+			self::$instanse = new MafiaGame();
+		}
 		return self::$instanse;
 	} 
 	
@@ -957,7 +977,7 @@ class MafiaGame
 		
 		$mode = " -";
 		$ppl = '';
-		foreach ($this->inGamePart as $nick => $part)
+		foreach ($game->inGamePart as $nick => $part)
 		{
 			$mode .= "v";
 			$ppl  .= " $nick";
