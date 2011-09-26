@@ -1216,7 +1216,9 @@ class MafiaGame
 			$this->state = DAY_TURN;
 			$this->say(self::$MAFIA_ROOM, "You kill  " .  MafiaGame::boco(2,  $who));
 			$this->say(self::$LOBBY_ROOM, "ALERT!!! They kill " .  MafiaGame::boco(2,  $who) . ", lets find killer!");
-			$this->say( $who,MafiaGame::bold("You are dead! please respect others and be quiet. Thanks."));
+			$this->say( $who,MafiaGame::bold("You are dead! please respect others and be quiet. Thanks. you can use " .
+				MafiaGame::colorize(3, '!wish') . "command ONLY ONCE!! to make your last wish."
+				));
 			$sayMe = $who;
 		}
 		else
