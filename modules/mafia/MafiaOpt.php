@@ -21,6 +21,13 @@ class MafiaOpt extends Module {
 			$server->message(MafiaGame::$LOBBY_ROOM,"Mafia win state is when mafia cnt = ppl cnt");
 		else
 			$server->message(MafiaGame::$LOBBY_ROOM,"Mafia win state is when ppl cnt = 0");			
+			
+			
+		if (MafiaGame::$DEAD_IS_TALKING)
+			$server->message(MafiaGame::$LOBBY_ROOM,"Dead people can talk");
+		else
+			$server->message(MafiaGame::$LOBBY_ROOM,"Dead people can not talk (sorry)");			
+			
 	}
 	
 	public function run() {
@@ -39,7 +46,10 @@ class MafiaOpt extends Module {
 				 break;
 			case "MAFIA-STATE":
 				 MafiaGame::$WON_STATE_NORMAL = $value;
-				 break;				 
+				 break;			
+			case "DEAD-TALK":
+				 MafiaGame::$DEAD_IS_TALKING = $value;
+				 break;			 
 		}
 	}
 }

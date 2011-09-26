@@ -78,6 +78,7 @@ class MafiaGame
 	 
 	 static $SHOW_MAFIA_COUNT = 0;
 	 static $WON_STATE_NORMAL = 1; 
+	 static $DEAD_IS_TALKING  = 0;
 	
 	
 	/**
@@ -243,7 +244,7 @@ class MafiaGame
 		$ppl = '';
 		foreach ($this->inGamePart as $nick => $part)
 		{
-			if ($part['alive'])
+			if ($part['alive'] || self::$DEAD_IS_TALKING)
 			{
 				$mode .= "v";
 				$ppl  .= " $nick";
@@ -953,6 +954,18 @@ class MafiaGame
 		
 		$rand = self::rand(100000,999999);
 		$game->setMode(self::$MAFIA_ROOM , "+k " . $rand);
+		
+		$mode = " -";
+		$ppl = '';
+		foreach ($this->inGamePart as $nick => $part)
+		{
+			$mode .= "v";
+			$ppl  .= " $nick";
+		}
+		
+		//Send the command
+		$server = Server::getInstance();
+		$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);
 			
 		self::getInstance(true);
 	}
