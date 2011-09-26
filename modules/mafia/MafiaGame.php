@@ -1,14 +1,14 @@
 <?php
 namespace modules\mafia;
-defined('MAFIA_TURN')   || define('MAFIA_TURN' , 1);
-//!defined('PRE_DAY_TURN') || define('PRE_DAY_TURN' , 2);
-defined('DAY_TURN')     || define('DAY_TURN' , 2);
+defined('MAFIA_TURN')   	|| define('MAFIA_TURN' , 1);
+//!defined('PRE_DAY_TURN') 	|| define('PRE_DAY_TURN' , 2);
+defined('DAY_TURN')     	|| define('DAY_TURN' , 2);
 
-defined('UNDEF_PPL')    || define('UNDEF_PPL' , 0);
-defined('NORMAL_PPL')   || define('NORMAL_PPL' , 1);
-defined('MAFIA_PPL')    || define('MAFIA_PPL' , 2);
-defined('DR_PPL')       || define('DR_PPL' , 3);
-defined('DETECTIVE_PPL')       || define('DETECTIVE_PPL' , 4);
+defined('UNDEF_PPL')    	|| define('UNDEF_PPL' , 0);
+defined('NORMAL_PPL')   	|| define('NORMAL_PPL' , 1);
+defined('MAFIA_PPL')    	|| define('MAFIA_PPL' , 2);
+defined('DR_PPL')       	|| define('DR_PPL' , 3);
+defined('DETECTIVE_PPL')  	|| define('DETECTIVE_PPL' , 4);
 defined('NOHARM_PPL')       || define('NOHARM_PPL' , 5);
 
 use awesomeircbot\server\Server;
