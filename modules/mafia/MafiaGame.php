@@ -214,20 +214,30 @@ class MafiaGame
 	 */
 	private function doNight()
 	{
+		$server = Server::getInstance();
 		//1- Set channel mode to modorated
 		$this->setMode(self::$LOBBY_ROOM , "+m");
-		//Set mode for all player to -v
+		//Set mode for all alive player to +v
 		$mode = " -";
 		$ppl = '';
+		$cnt = 0;
 		foreach ($this->inGamePart as $nick => $part)
 		{
 			$mode .= "v";
 			$ppl  .= " $nick";
+			$cnt++;
+			if ($cnt >=3 )
+			{
+				$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);
+				$mode =" -";
+				$ppl = '';
+				$cnt = 0;
+			}
 		}
 		
 		//Send the command
-		$server = Server::getInstance();
-		$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);
+		if ($cnt > 0 )
+			$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);	
 	}
 	
 	/**
@@ -237,23 +247,33 @@ class MafiaGame
 	
 	private function doDay()
 	{
+		$server = Server::getInstance();
 		//1- Set channel mode to modorated
 		$this->setMode(self::$LOBBY_ROOM , "+m");
 		//Set mode for all alive player to +v
 		$mode = " +";
 		$ppl = '';
+		$cnt = 0;
 		foreach ($this->inGamePart as $nick => $part)
 		{
 			if ($part['alive'] || self::$DEAD_IS_TALKING)
 			{
 				$mode .= "v";
 				$ppl  .= " $nick";
+				$cnt++;
+				if ($cnt >=3 )
+				{
+					$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);
+					$mode =" +";
+					$ppl = '';
+					$cnt = 0;
+				}
 			}
 		}
 		
 		//Send the command
-		$server = Server::getInstance();
-		$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);		
+		if ($cnt > 0 )
+			$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);		
 	}	
 	/**
 	 * 
