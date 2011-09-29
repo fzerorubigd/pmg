@@ -232,6 +232,7 @@ class MafiaGame
 				$mode =" -";
 				$ppl = '';
 				$cnt = 0;
+				sleep(1);
 			}
 		}
 		
@@ -267,6 +268,7 @@ class MafiaGame
 					$mode =" +";
 					$ppl = '';
 					$cnt = 0;
+					sleep(1);
 				}
 			}
 		}
