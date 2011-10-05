@@ -305,6 +305,7 @@ class MafiaGame
 		}
 		
 		$mode = ' +v ';
+		$server = Server::getInstance();
 		$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $forWho);		
 	}
 	
