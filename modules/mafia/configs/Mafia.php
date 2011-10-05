@@ -30,6 +30,7 @@ class Mafia implements ModuleConfig {
 		"timeout" => "modules\mafia\MafiaTimeout",
 		"count" => "modules\mafia\MafiaCount",
 		"wish" => "modules\mafia\MafiaWish",
+		"voice" => "modules\mafia\MafiaVoice",
 	);
 	
 	public static $mappedEvents = array(

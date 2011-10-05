@@ -27,7 +27,7 @@ class MafiaGame
 	/**
 	 * 
 	 * Mafia room , bot must have access to take ownership
-	 * @var unknown_type
+	 * @var string
 	 */
 	static $MAFIA_ROOM = "##PMGMafias";
 	
@@ -277,6 +277,37 @@ class MafiaGame
 		if ($cnt > 0 )
 			$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);		
 	}	
+	
+	/**
+	 * 
+	 * Ask for voice, and bot gave them if authorized
+	 * @param string $forWho
+	 */
+	
+	function askVoice($forWho)
+	{
+		if (!$this->isIn($forWho))
+		{
+			$this->say($forWho, "You are not in game, sorry");
+			return;
+		}
+		
+		if ($this->state != DAY_TURN)
+		{
+			$this->say($forWho, "Its not a good time to ask this.");
+			return;
+		}
+		
+		if (!$this->isAlive($forWho) && !self::$DEAD_IS_TALKING)
+		{
+			$this->say($forWho, "You are dead! rest in peace :D (Or I'll kick you!)");
+			return;			
+		}
+		
+		$mode = ' +v ';
+		$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $forWho);		
+	}
+	
 	/**
 	 * 
 	 * Random function
