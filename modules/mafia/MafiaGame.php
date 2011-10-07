@@ -412,16 +412,30 @@ class MafiaGame
 		{
 			if (count(self::$instanse->inGameNicks))
 			{
+				$server = Server::getInstance();
+		
 				$mode = " -";
 				$ppl = '';
-				foreach (self::$instanse->inGamePart as $nick => $part)
+				$cnt = 0;
+				foreach ($game->inGamePart as $nick => $part)
 				{
 					$mode .= "v";
 					$ppl  .= " $nick";
+					$cnt++;
+					if ($cnt >= 3 )
+					{
+						$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);
+						$mode =" -";
+						$ppl = '';
+						$cnt = 0;
+						sleep(1);
+					}
 				}
+		
 				//Send the command
-				$server = Server::getInstance();
-				$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);				
+				if ($cnt > 0)
+					$server->raw("MODE " . self::$LOBBY_ROOM . $mode . $ppl);
+						
 			}
 			self::$instanse = new MafiaGame();
 		}
@@ -1034,6 +1048,7 @@ class MafiaGame
 		
 		$mode = " -";
 		$ppl = '';
+		$cnt = 0;
 		foreach ($game->inGamePart as $nick => $part)
 		{
 			$mode .= "v";
