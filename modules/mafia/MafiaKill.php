@@ -26,7 +26,7 @@ class MafiaKill extends Module {
 			return;
 		}
 		$you = $this->parameters(1);
-		if (!$game->isIn($you) && $you != "*")
+		if (!$game->isIn($you) && $you != "*" && $you != '-') 
 		{
 			$server->message($I, "$you is not in game ;) so why hate him/her this much?");
 			return;
