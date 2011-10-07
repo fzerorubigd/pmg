@@ -1182,7 +1182,7 @@ class MafiaGame
         elseif ($you == '-')
         {
           $this->killVotes[$I] = false;
-          $this->say(self::$MAFIA_ROOM,"$I remove his vote. be fast :)");
+          $this->say(self::$MAFIA_ROOM,"$I remove his/her vote. be fast :)");
         }
 		else
 		{
@@ -1350,7 +1350,7 @@ class MafiaGame
 		elseif ($you == '-')
 		{
 			$this->punishVotes[$I] = false;
-			$this->say(self::$LOBBY_ROOM, MafiaGame::boco(2,  $I) . " Remove his vote!");
+			$this->say(self::$LOBBY_ROOM, MafiaGame::boco(2,  $I) . " Remove his/her vote!");
 		}
 		else
 		{
