@@ -1074,6 +1074,10 @@ class MafiaGame
 				$this->drVote = $this->isDrDead();
 				$this->detectiveVote = $this->isDetectiveDead();
 				$this->say(self::$MAFIA_ROOM,MafiaGame::bold("Your turn to kill!! use " .MafiaGame::colorize(2, "!kill") . " command to vote"));
+				$this->say(self::$MAFIA_ROOM,MafiaGame::bold("!kill *  : for kill nobody"));
+				$this->say(self::$MAFIA_ROOM,MafiaGame::bold("!kill -  : for remove your vote"));
+				$this->say(self::$MAFIA_ROOM,MafiaGame::bold("!vote  : To see other mafias (and their votes)"));
+				$this->say(self::$MAFIA_ROOM,MafiaGame::bold("!list  : To see list of all players"));
 				$this->act(self::$LOBBY_ROOM,"Good night ppl ;)");
 				$this->nightTurnTime = time();
 				break;
@@ -1094,6 +1098,10 @@ class MafiaGame
 									MafiaGame::bold("Hi ppl, No one dead. peeowh!! either its a doctor's job or mafia trick :D, but who care? use " .
 										MafiaGame::colorize(2, "!punish") . " command"));					
 				}
+				$this->say(self::$LOBBY_ROOM,MafiaGame::bold("!punish -  : for remove your vote"));
+				$this->say(self::$LOBBY_ROOM,MafiaGame::bold("!vote  : To see other people votes"));
+				$this->say(self::$LOBBY_ROOM,MafiaGame::bold("!list  : To see list of all players"));	
+				$this->say(self::$LOBBY_ROOM,MafiaGame::bold("!voice : If you must have voice and you have no voice, (mostly reconnect problems)"));	
 				break;			
 		}
 	}
@@ -1171,60 +1179,17 @@ class MafiaGame
 			$this->killVotes[$I] = $you;
 			$this->say(self::$MAFIA_ROOM,"$I vote for killing $you");
 		}
+        elseif ($you == '-')
+        {
+          $this->killVotes[$I] = false;
+          $this->say(self::$MAFIA_ROOM,"$I remove his vote. be fast :)");
+        }
 		else
 		{
 			$this->say($I,"Your vote not accepted!");
 		}
 
 		return $this->nightTimeEnd();
-		/*
-		foreach ($this->killVotes as $vote)
-			if ($vote === false)
-				return false;
-		$result = array_count_values ($this->killVotes);
-		$max = -1;
-		$who = '';
-		$hasDuplicate = false;
-		foreach ($result as $dead => $wanted)
-		{
-			if ($wanted == $max)
-				$hasDuplicate = true;
-			elseif ($wanted > $max)
-			{
-				$who = $dead;
-				$max = $wanted;
-				$hasDuplicate = false;
-			}
-		}
-		
-		if ($hasDuplicate)
-		{
-			$this->say(self::$MAFIA_ROOM,MafiaGame::colorize(4,"There is a tie! please some one fix his/her vote!"));
-			return;
-		}
-		
-		if (!$this->drVote)
-		{
-			$this->act(self::$LOBBY_ROOM,"Waiting for dr to vote :D");
-			return false;
-		}		
-		
-		if ($who != "*" && strtolower($who) != strtolower($this->drVote)){
-			$this->inGamePart[strtolower($who)]['alive'] = false;
-			$this->state = DAY_TURN;
-			$this->say(self::$MAFIA_ROOM, "You kill  " .  MafiaGame::boco(2,  $who));
-			$this->say(self::$LOBBY_ROOM, "ALERT!!! They kill " .  MafiaGame::boco(2,  $who) . ", lets find killer!");
-			$this->say( $who,MafiaGame::bold("You are dead! please respect others and be quiet. Thanks."));
-		}
-		else
-		{
-			$this->state = DAY_TURN;
-			$this->say(self::$MAFIA_ROOM, "Nobody killed :D");
-			$this->say(self::$LOBBY_ROOM, "No body kiled last night! WOOOW :D but lets hunt some of them!");
-		}
-		$this->listAllUsers(self::$LOBBY_ROOM);
-		$this->sayStatus();
-		return $who; */
 	}
 	
 	/**
@@ -1237,7 +1202,7 @@ class MafiaGame
 		foreach ($this->killVotes as $vote)
 			if ($vote === false)
 			{
-				$this->act(self::$LOBBY_ROOM,"Waiting for mafias to vote :D");
+				$this->act(self::$LOBBY_ROOM,"Waiting for dr/detective/mafias to vote !");
 				return false;
 			}
 		$result = array_count_values ($this->killVotes);
@@ -1262,17 +1227,11 @@ class MafiaGame
 			return false;
 		}
 
-		if (!$this->drVote)
+		if (!$this->drVote || !$this->detectiveVote)
 		{
-			$this->act(self::$LOBBY_ROOM,"Waiting for dr to vote !");
+			$this->act(self::$LOBBY_ROOM,"Waiting for dr/detective/mafias to vote !");
 			return false;
-		}	
-		
-		if (!$this->detectiveVote)
-		{
-			$this->act(self::$LOBBY_ROOM,"Waiting for detective to do his job!");
-			return false;
-		}					
+		}				
 		
 		if ($who != "*" && 
 			strtolower($who) != strtolower($this->drVote) && 
@@ -1345,7 +1304,17 @@ class MafiaGame
 			&& $this->getTypeOf($I) == DR_PPL)
 		{
 			$this->drVote = $you;
-			$this->act($I,"you heal $you");
+			$this->say($I,"you heal $you");
+			
+			if ($I == $you)
+			{
+				$this->act($I,"Thinks you are selfish!");
+			}
+		}
+		elseif ($you == '-')
+		{
+			$this->drVote = false;
+			$this->say($I,"You heal no body! heal some one!");
 		}
 		else
 		{
@@ -1377,6 +1346,11 @@ class MafiaGame
 		{
 			$this->punishVotes[$I] = $you;
 			$this->say(self::$LOBBY_ROOM, MafiaGame::boco(2,  $I) . " vote for punishing " . MafiaGame::boco(2,  $you));
+		}
+		elseif ($you == '-')
+		{
+			$this->punishVotes[$I] = false;
+			$this->say(self::$LOBBY_ROOM, MafiaGame::boco(2,  $I) . " Remove his vote!");
 		}
 		else
 		{
