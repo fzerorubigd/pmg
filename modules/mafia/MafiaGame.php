@@ -475,6 +475,9 @@ class MafiaGame
 	 */
 	public function changeNick($from , $to)
 	{
+		//Fix a bug that case a change nick to current nick drop you with no trace at all :D
+		if (strtolower($from) == strtolower($to))
+			return;
 		if ($this->isIn($from))
 		{
 			$this->inGameNicks[strtolower($to)] = $this->inGameNicks[strtolower($from)];
