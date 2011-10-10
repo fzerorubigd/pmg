@@ -1575,7 +1575,7 @@ class MafiaGame
 	 */
 	public function whoAmI($I)
 	{
-		if ($this->state == MAFIA_TURN || $this->state == DAY_TURN)
+		if ($this->state != MAFIA_TURN && $this->state != DAY_TURN)
 		{
 			return;
 		}
