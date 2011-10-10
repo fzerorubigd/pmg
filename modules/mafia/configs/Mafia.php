@@ -31,6 +31,7 @@ class Mafia implements ModuleConfig {
 		"count" => "modules\mafia\MafiaCount",
 		"wish" => "modules\mafia\MafiaWish",
 		"voice" => "modules\mafia\MafiaVoice",
+		"whoami" => "modules\mafia\MafiaWhoami"
 	);
 	
 	public static $mappedEvents = array(

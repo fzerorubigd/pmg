@@ -1568,4 +1568,56 @@ class MafiaGame
 			
 		}
 	}
+	
+	/**
+	 * Say the role to players
+	 * @param $I string
+	 */
+	public function whoAmI($I)
+	{
+		if ($this->state == MAFIA_TURN || $this->state == DAY_TURN)
+		{
+			return;
+		}
+		
+		if (!$this->isIn($I))
+		{
+			$this->say($I , 'You are nobody :D');
+			return;
+		}
+		
+		$data = $this->inGamePart[strtolower($I)];
+		
+		if ($data['mode'] == MAFIA_PPL)
+		{
+			$this->say($I, MafiaGame::boco(9,"You are mafia!!"));
+			$this->say($I, "You are mafia :D Please join " . self::$MAFIA_ROOM  . " and " . self::$LOBBY_ROOM);
+			$this->say($I, self::$MAFIA_ROOM  . " Password : " . $this->mafiaPass . " and " . self::$LOBBY_ROOM ); #. " Password : " . $this->lobbyPass);
+			$this->say($I, "Use this command : /join " . self::$MAFIA_ROOM . ' ' . $this->mafiaPass);
+		}
+		else 
+		{
+			$this->say($I, MafiaGame::boco(9,"You are <NOT> mafia!"));
+			$this->say($I, "The game begin, go to sleep! (Join " . self::$LOBBY_ROOM . " room please and " . 
+						"stay away from " . self::$MAFIA_ROOM . " its dangerous!)" );
+			$this->say($I, self::$LOBBY_ROOM ); #. " Password : " . $this->lobbyPass);
+		}
+			
+		if ($data['mode'] == DR_PPL)
+		{
+			$this->say($I,MafiaGame::bold("You are docter!, use " . 
+				MafiaGame::colorize(2,"!heal") . " command in PRIVATE to heal one ppl in NIGHT!"));
+		}
+			
+		if ($data['mode'] == DETECTIVE_PPL)
+		{
+			$this->say($I,MafiaGame::bold("You are detective!, use " . 
+				MafiaGame::colorize(2,"!whois") . " command in PRIVATE to identify one ppl each NIGHT!"));
+		}		
+			
+		if ($data['mode'] == NOHARM_PPL)
+		{
+			$this->say($I,MafiaGame::bold("You are Invulnerable! you die only with punish command! "));
+		}						
+	}
 }
