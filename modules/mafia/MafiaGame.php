@@ -1620,4 +1620,13 @@ class MafiaGame
 			$this->say($I,MafiaGame::bold("You are Invulnerable! you die only with punish command! "));
 		}						
 	}
+	
+	
+	public function funBersam()
+	{
+		if ($this->lastDead != '*')
+		{
+			$this->say();
+		}
+	}
 }

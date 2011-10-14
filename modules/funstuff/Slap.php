@@ -13,11 +13,11 @@ use awesomeircbot\server\Server;
 
 class Slap extends Module {
 	
-	public static $requiredUserLevel = 5;
+	public static $requiredUserLevel = 0;
 	
 	public function run() {
 		$server = Server::getInstance();
-		$server->act($this->channel, "slaps " . $this->parameters(1));
+		$server->act($this->channel, "slaps " . $this->parameters(1) . " for " . $this->parameters(2));
 	}
 }
 ?>
