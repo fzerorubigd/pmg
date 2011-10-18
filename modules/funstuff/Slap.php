@@ -10,6 +10,7 @@ namespace modules\funstuff;
 
 use awesomeircbot\module\Module;
 use awesomeircbot\server\Server;
+use modules\mafia\MafiaGame;
 
 class Slap extends Module {
 	
@@ -17,7 +18,27 @@ class Slap extends Module {
 	
 	public function run() {
 		$server = Server::getInstance();
-		$server->act($this->channel, "slaps " . $this->parameters(1) . " for " . $this->parameters(2 , true));
+		$game = MafiaGame::getInstance();
+		
+		$I = $this->senderNick;	
+		if (!$game->isIn($I))
+		{
+			$server->message($I, "You are not in game ;)");
+			return;
+		}
+		
+		$cleareString = $this->ParseString($this->parameters(2 , true));
+		$server->act($this->channel, "slaps " . $this->parameters(1) .' '. $cleareString);
+		
+		
+	}
+	
+	public function ParseString($str){
+		$str = trim($str);
+		if (!preg_match('/^for/i', $str) && strlen($str) > 0){
+			$str = 'for '.$str;
+		}
+		return $str;
 	}
 }
 ?>
