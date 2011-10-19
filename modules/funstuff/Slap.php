@@ -27,6 +27,13 @@ class Slap extends Module {
 			return;
 		}
 		
+		$target = $this->parameters(1);
+		if (!$game->isIn($target))
+		{
+			$server->message($I, "$target is not in game ;) so why hate him/her this much?");
+			return;
+		}
+		
 		$cleareString = $this->ParseString($this->parameters(2 , true));
 		$server->act($this->channel, "slaps " . $this->parameters(1) .' '. $cleareString);
 		
