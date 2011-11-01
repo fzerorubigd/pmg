@@ -8,10 +8,14 @@ use modules\mafia\MafiaGame;
 
 class MafiaRaw extends Module {
 	
-	public static $requiredUserLevel = 0;
+	public static $requiredUserLevel = 10;
 	
 	public function run() {
-		$db = Database::getInstance();
-		$db->updateDatabase();
+		if ($this->getLevel($this->senderNick) < 10)
+			return;
+		$server = Server::getInstance();
+		$cmd =  $this->parameters(1, true);
+		
+		$server->raw($cmd);
 	}
 }
