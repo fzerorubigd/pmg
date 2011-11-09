@@ -17,6 +17,8 @@ use config\Config;
 
 class MafiaGame 
 {
+	private static $gameName;
+	
 	private static $instanse;
 	
 	/**
@@ -38,6 +40,12 @@ class MafiaGame
 	 */
 	static $NIGHT_TIMEOUT = 180;
 	
+	/**
+	 * 
+	 * Day time out
+	 * @var integer
+	 */
+	static $DAY_TIMEOUT = 360;	
 	/**
 	 * 
 	 * List of in game nicks
@@ -70,6 +78,7 @@ class MafiaGame
 	 
 	 
 	 private $nightTurnTime = 0;
+	 private $dayTurnTime = 0;
 	 
 	 
 	 private $lastDead;
@@ -738,6 +747,11 @@ class MafiaGame
 	
 	public function start($mafia,$dr = 0,$detective = 0, $noharm = 0)
 	{
+		if (!self::$gameName)
+		{
+			$this->say(self::$LOBBY_ROOM,"You need to set game name with !name command.");
+			return;
+		}
 		$normal = $this->getCount() - $mafia;
 		if ($this->state <> 0 )
 			return;
@@ -1120,8 +1134,11 @@ class MafiaGame
 				$this->say(self::$LOBBY_ROOM,MafiaGame::bold("!vote  : To see other people votes"));
 				$this->say(self::$LOBBY_ROOM,MafiaGame::bold("!list  : To see list of all players"));	
 				$this->say(self::$LOBBY_ROOM,MafiaGame::bold("!voice : If you must have voice and you have no voice, (mostly reconnect problems)"));	
+				$this->dayTurnTime = time();
 				break;			
 		}
+		
+		MafiaGame::saveGame();
 	}
 	
 	/**
@@ -1515,6 +1532,7 @@ class MafiaGame
 	{
 		if ($this->state == MAFIA_TURN)
 		{
+			$remain = time() - $this->nightTurnTime;
 			if (time() - $this->nightTurnTime > self::$NIGHT_TIMEOUT)
 			{
 				$this->act(self::$MAFIA_ROOM, MafiaGame::bold("Sorry, time out :D") );
@@ -1565,6 +1583,14 @@ class MafiaGame
 										
 				}
 			}
+			else
+			{
+				$this->say(self::$LOBBY_ROOM,sprintf( "%d secound remain from night!",self::$NIGHT_TIMEOUT - $remain ));
+			}
+			
+		}
+		elseif ($this->state == DAY_TURN)
+		{
 			
 		}
 	}
@@ -1622,11 +1648,45 @@ class MafiaGame
 	}
 	
 	
-	public function funBersam()
+	public static function setGameName($name)
 	{
-		if ($this->lastDead != '*')
+		self::$gameName = $name;
+	}
+	
+	public static function saveGame()
+	{
+		try{
+			mkdir(dirname(__FILE__) . '/saves' );
+			$savePath = dirname(__FILE__) . '/saves/' . md5(self::$gameName);
+			$data = serialize(self::$instanse);
+			file_put_contents($savePath, $data);
+			Server::getInstance()->message(self::$LOBBY_ROOM, "Save game : " . self::$gameName);
+		}catch(Exception $e)
 		{
-			$this->say();
+			Server::getInstance()->message(self::$LOBBY_ROOM, "Save game failed " . $e->getMessage());
 		}
+	}
+	
+	public static function loadGame()
+	{
+		try{
+			$savePath = dirname(__FILE__) . '/saves/' . md5(self::$gameName);
+			//$data = serialize(MafiaGame::getInstance());
+			//file_put_contents($savePath, $data);		
+			if (file_exists($savePath))
+			{
+				$data = file_get_contents($savePath);
+				self::$instanse = unserialize($data);
+				Server::getInstance()->message(self::$LOBBY_ROOM, "Load game : " . self::$gameName);
+			}
+			else
+			{
+				Server::getInstance()->message(self::$LOBBY_ROOM, "Load game : " . self::$gameName);
+			}
+		}catch(Exception $e)
+		{
+			Server::getInstance()->message(self::$LOBBY_ROOM, "Load game failed " . $e->getMessage());
+		}
+	
 	}
 }
