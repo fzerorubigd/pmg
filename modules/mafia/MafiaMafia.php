@@ -12,7 +12,7 @@ use awesomeircbot\module\Module;
 use awesomeircbot\server\Server;
 use modules\mafia\MafiaGame;
 
-class Mafia extends Module {
+class MafiaMafia extends Module {
 	
 	public static $requiredUserLevel = 0;
 	
