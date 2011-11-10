@@ -35,7 +35,7 @@ class Slap extends Module {
 		}
 		
 		$cleareString = $this->ParseString($this->parameters(2 , true));
-		$server->act($this->channel, "slaps " . $this->parameters(1) .' '. $cleareString);
+		$server->message($this->channel, "$I slaps " . $this->parameters(1) .' '. $cleareString);
 		
 		
 	}

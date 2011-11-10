@@ -13,7 +13,7 @@ use awesomeircbot\line\ReceivedLineTypes;
 class FunStuff implements ModuleConfig {
 	
 	public static $mappedCommands = array(
-		"slap" => "modules\\funstuff\Slap",
+	//	"slap" => "modules\\funstuff\Slap",
 		"harass" => "modules\\funstuff\Harass",
 	);
 	
@@ -26,12 +26,12 @@ class FunStuff implements ModuleConfig {
 	);
 	
 	public static $help = array(
-		"slap" => array(
-			"BASE" => array(
-				"description" => "Slaps the given user", 
-				"parameters" => "<nickname>"
-			)
-		),
+//		"slap" => array(
+//			"BASE" => array(
+//				"description" => "Slaps the given user", 
+//				"parameters" => "<nickname>"
+//			)
+//		),
 		
 		"harass" => array(
 			"BASE" => array(
