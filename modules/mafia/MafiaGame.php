@@ -1426,8 +1426,8 @@ class MafiaGame {
             }
             $players = $this->getAliveCount();
             $percent = $count * 100 / $players;
-            if ($percent > 70 && $remain > self::$DAY_TIMEOUT) {
-                $this->say(self::$LOBBY_ROOM, 'More than 70% of players cast their votes and day time out is ended. ');
+            if ($percent > 60 && $remain > self::$DAY_TIMEOUT) {
+                $this->say(self::$LOBBY_ROOM, 'More than 60% of players cast their votes and day time out is ended. ');
                 $this->say(self::$LOBBY_ROOM,$this->boco(2, 'DOOM!') . ' has come to this world :D');
                 $this->say(self::$LOBBY_ROOM, 'If there is a tie, cast your vote in private.');
 

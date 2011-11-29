@@ -28,7 +28,7 @@ class MafiaOpt extends Module {
         else
             $server->message(MafiaGame::$LOBBY_ROOM, "Dead people can not talk (sorry) (dead-talk 0)");
 
-        $server->message(MafiaGame::$LOBBY_ROOM, sprintf("Day timeout is %d secound (day-time %d)", MafiaGame::$DAY_TIMEOUT,MafiaGame::$DAY_TIMEOUT));
+        $server->message(MafiaGame::$LOBBY_ROOM, sprintf("Day timeout is %d secound (day-time %d)", MafiaGame::$DAY_TIMEOUT, MafiaGame::$DAY_TIMEOUT));
         $server->message(MafiaGame::$LOBBY_ROOM, sprintf("Night timeout is %d secound (night-time %d)", MafiaGame::$NIGHT_TIMEOUT, MafiaGame::$NIGHT_TIMEOUT));
     }
 
@@ -52,13 +52,13 @@ class MafiaOpt extends Module {
                 break;
             case "NIGHT-TIME":
                 MafiaGame::$NIGHT_TIMEOUT = intval($value);
-                if (MafiaGame::$NIGHT_TIMEOUT < 180)
-                    MafiaGame::$NIGHT_TIMEOUT = 180;
+                if (MafiaGame::$NIGHT_TIMEOUT < 100)
+                    MafiaGame::$NIGHT_TIMEOUT = 100;
                 break;
             case "DAY-TIME":
                 MafiaGame::$DAY_TIMEOUT = intval($value);
-                if (MafiaGame::$DAY_TIMEOUT < 180)
-                    MafiaGame::$DAY_TIMEOUT = 180;
+                if (MafiaGame::$DAY_TIMEOUT < 100)
+                    MafiaGame::$DAY_TIMEOUT = 100;
                 break;
         }
     }
