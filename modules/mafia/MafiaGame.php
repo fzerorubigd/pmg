@@ -68,18 +68,77 @@ class MafiaGame {
      * @var integer
      */
     private $state = 0;
+    
+    /**
+     * Kill votes in night
+     * @var array
+     */
     private $killVotes;
+    
+    /**
+     * Punish vote in day
+     * @var array
+     */
     private $punishVotes;
     //private $lobbyPass;
+    /**
+     * Mafia channel password
+     * @var string
+     */
     private $mafiaPass;
+    
+    /**
+     * Dr vote to heal
+     * @var string
+     */
     private $drVote;
+    /**
+     * Detective suspect
+     * @var string
+     */
     private $detectiveVote;
+    
+    /**
+     * night start time (Unix timestamp)
+     * @var integer
+     */
     private $nightTurnTime = 0;
+    
+    /**
+     * day start time (Unix timestamp)
+     * @var integer
+     */    
     private $dayTurnTime = 0;
+    
+    /**
+     * The one who dead last
+     * @var string
+     */
     private $lastDead;
+    
+    /**
+     * Last dead's wish
+     * @var string
+     */
     private $lastWish;
+    
+    /**
+     *  Show alive mafia count each day?
+     * @var integer
+     */
     static $SHOW_MAFIA_COUNT = 0;
+    
+    /**
+     * Win state , I will remove this soon
+     * @var integer
+     * @deprecated
+     */
     static $WON_STATE_NORMAL = 1;
+    
+    /**
+     * Dead people can talk or not
+     * @var Integer
+     */
     static $DEAD_IS_TALKING = 0;
 
     /**

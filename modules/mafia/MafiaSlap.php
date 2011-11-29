@@ -28,6 +28,13 @@ class MafiaSlap extends Module {
             return;
         }
 
+        if (!MafiaGame::$DEAD_IS_TALKING) {
+            if ($game->isAlive($I)) {
+                $server->message($I, "You are alive, In dead IS dead mode, you can not use emots if you are alive. use your own hand for slap!!!");
+                return;
+            }
+        }
+
         $target = $this->parameters(1);
         if (!$game->isIn($target)) {
             $server->message($I, "$target is not in game ;) so why hate him/her this much?");
@@ -35,7 +42,7 @@ class MafiaSlap extends Module {
         }
 
         $cleareString = $this->ParseString($this->parameters(2, true));
-        $server->message($this->channel, "$I slaps " . $this->parameters(1) . ' ' . $cleareString);
+        $server->message(MafiaGame::$LOBBY_ROOM, "$I slaps " . $this->parameters(1) . ' ' . $cleareString);
     }
 
     public function ParseString($str) {
