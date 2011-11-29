@@ -68,13 +68,13 @@ class MafiaGame {
      * @var integer
      */
     private $state = 0;
-    
+
     /**
      * Kill votes in night
      * @var array
      */
     private $killVotes;
-    
+
     /**
      * Punish vote in day
      * @var array
@@ -86,55 +86,56 @@ class MafiaGame {
      * @var string
      */
     private $mafiaPass;
-    
+
     /**
      * Dr vote to heal
      * @var string
      */
     private $drVote;
+
     /**
      * Detective suspect
      * @var string
      */
     private $detectiveVote;
-    
+
     /**
      * night start time (Unix timestamp)
      * @var integer
      */
     private $nightTurnTime = 0;
-    
+
     /**
      * day start time (Unix timestamp)
      * @var integer
-     */    
+     */
     private $dayTurnTime = 0;
-    
+
     /**
      * The one who dead last
      * @var string
      */
     private $lastDead;
-    
+
     /**
      * Last dead's wish
      * @var string
      */
     private $lastWish;
-    
+
     /**
      *  Show alive mafia count each day?
      * @var integer
      */
     static $SHOW_MAFIA_COUNT = 0;
-    
+
     /**
      * Win state , I will remove this soon
      * @var integer
      * @deprecated
      */
     static $WON_STATE_NORMAL = 1;
-    
+
     /**
      * Dead people can talk or not
      * @var Integer
@@ -1428,7 +1429,7 @@ class MafiaGame {
             $percent = $count * 100 / $players;
             if ($percent > 60 && $remain > self::$DAY_TIMEOUT) {
                 $this->say(self::$LOBBY_ROOM, 'More than 60% of players cast their votes and day time out is ended. ');
-                $this->say(self::$LOBBY_ROOM,$this->boco(2, 'DOOM!') . ' has come to this world :D');
+                $this->say(self::$LOBBY_ROOM, $this->boco(2, 'DOOM!') . ' has come to this world :D');
                 $this->say(self::$LOBBY_ROOM, 'If there is a tie, cast your vote in private.');
 
 
@@ -1438,7 +1439,8 @@ class MafiaGame {
                     }
                 }
                 $this->doNight();
-                
+            } else {
+                $this->say(self::$LOBBY_ROOM, sprintf("%d secound remain from day, %d player of %d cast their vote!", self::$DAY_TIMEOUT - $remain, $count, $players));
             }
         }
     }
