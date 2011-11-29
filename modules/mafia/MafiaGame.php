@@ -966,6 +966,7 @@ class MafiaGame {
                 $this->say(self::$MAFIA_ROOM, MafiaGame::bold("!kill -  : for remove your vote"));
                 $this->say(self::$MAFIA_ROOM, MafiaGame::bold("!vote  : To see other mafias (and their votes)"));
                 $this->say(self::$MAFIA_ROOM, MafiaGame::bold("!list  : To see list of all players"));
+                $this->say(self::$LOBBY_ROOM, MafiaGame::bold("!timeout  : To end the night after " . self::$NIGHT_TIMEOUT));
                 $this->act(self::$LOBBY_ROOM, "Good night ppl ;)");
                 $this->nightTurnTime = time();
                 break;
@@ -985,6 +986,7 @@ class MafiaGame {
                 $this->say(self::$LOBBY_ROOM, MafiaGame::bold("!vote  : To see other people votes"));
                 $this->say(self::$LOBBY_ROOM, MafiaGame::bold("!list  : To see list of all players"));
                 $this->say(self::$LOBBY_ROOM, MafiaGame::bold("!voice : If you must have voice and you have no voice, (mostly reconnect problems)"));
+                $this->say(self::$LOBBY_ROOM, MafiaGame::bold("!timeout  : To end the day after " . self::$DAY_TIMEOUT . " and 70% of player cast their vote."));
                 $this->dayTurnTime = time();
                 break;
         }
