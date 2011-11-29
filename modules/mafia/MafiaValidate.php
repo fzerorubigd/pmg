@@ -9,9 +9,10 @@ use modules\mafia\MafiaGame;
 
 class MafiaValidate extends Module {
 
- //   public static $requiredUserLevel = 0;
- //   public static $lastValidateTime = 0;
- //   public static $lastValidateUser = '';
+    public static $requiredUserLevel = 0;
+
+    //   public static $lastValidateTime = 0;
+    //   public static $lastValidateUser = '';
 
     private function findUser($user) {
         $game = MafiaGame::getInstance();
@@ -52,17 +53,16 @@ class MafiaValidate extends Module {
         $who = $this->findUser($user);
         //if (!$who) {
         //    $game->removeNick($who);
-       // }
+        // }
 
         $server->act($this->senderNick, "Validation of user $user done!");
 
-    //    self::$lastValidateTime = 0;
-   //     self::$lastValidateUser = '';
+        //    self::$lastValidateTime = 0;
+        //     self::$lastValidateUser = '';
         //    }
-
-    //    if (strtolower($user) == strtolower(self::$lastValidateUser) && self::$lastValidateUser != '') {
-    //        $server->act($this->senderNick, "Another validate of user " . self::$lastValidateUser . " in progress! wait please.");
-    //    }
+        //    if (strtolower($user) == strtolower(self::$lastValidateUser) && self::$lastValidateUser != '') {
+        //        $server->act($this->senderNick, "Another validate of user " . self::$lastValidateUser . " in progress! wait please.");
+        //    }
     }
 
 }
