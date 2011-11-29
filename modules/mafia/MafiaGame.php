@@ -1434,7 +1434,7 @@ class MafiaGame {
 
 
                 foreach ($this->punishVotes as $who => $vote) {
-                    if ($vote) {
+                    if (!$vote) {
                         $this->iSayPunishYou($who, $who);
                     }
                 }
