@@ -29,6 +29,6 @@ class MafiaJoinChanel extends Module {
 		$user = UserManager::get($this->senderNick);
 		
 		$server = Server::getInstance();
-		$server->message($user->nickname, "Welcome to Persian Mafia game. This channel is logged, check this for more info : http://cyberrabbits.net/non/mafia/");		
+		//$server->message($user->nickname, "Welcome to Persian Mafia game. This channel is logged, check this for more info : http://cyberrabbits.net/non/mafia/");		
 	}
 }
