@@ -18,7 +18,7 @@ class Message extends Module {
 	
 	public function run() {
 		$server = Server::getInstance();
-		$server->message($this->parameters(1), ,'from ' . $this->senderNick . ' : ' . $this->parameters(2, true));
+		$server->message($this->parameters(1), 'from ' . $this->senderNick . ' : ' . $this->parameters(2, true));
 		$server->notify($this->senderNick, '"' . $this->parameters(2, true) . '" sent to ' . $this->parameters(1) . "successfully");
 	}
 }
